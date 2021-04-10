@@ -1,6 +1,8 @@
 #include <iostream>
 #include <Windows.h>
+#include <thread>
 
+using namespace std;
 std::wstring tetris[7];
 int nFieldWidth = 12;
 int nFieldHeight = 18;
@@ -113,14 +115,35 @@ int main()
 	int nCurrentX = nFieldWidth / 2;
 	int nCurrentY = 0;
 
-
+	bool bKey[4];
 	while (!bGameOver)
 	{
 		// Game timing ====
+		this_thread::sleep_for(50ms);
 
 		//Input ====
+		for (size_t k = 0; k < 4; k++)
+		
+																  //R   L   D Z
+			bKey[k] = (0x8000 & GetAsyncKeyState((unsigned char)("\x27\x25\x28Z"[k]))) != 0;
+		
 
 		// Game Logic ==== Shape change, falling etc.
+		if (bKey[1])
+		{
+			if (DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY))
+			{
+				nCurrentX = nCurrentX - 1;
+			}
+		}
+
+		if (bKey[0])
+		{
+			if (DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY))
+			{
+				nCurrentX = nCurrentX + 1;
+			}
+		}
 
 		// Render Output =====
 
